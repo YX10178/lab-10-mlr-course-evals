@@ -104,29 +104,48 @@ Because cls_did_eval is closely related to the other two variables. It can be ca
 
 #14
 ```{r}
-m_full<-lm(score~rank+ethnicity+gender+language+age+cls_perc_eval+cls_did_eval+cls_level+cls_profs+cls_credits+bty_avg, data=evals)
+m_full<-lm(score~rank+ethnicity+gender+language+age+cls_perc_eval+cls_students+cls_level+cls_profs+cls_credits+bty_avg, data=evals)
 summary (m_full)
-#Adjusted R-squared:  0.1418 
+#Adjusted R-squared:  0.1412 
 ```
 
 #15
 ```{r}
-best_model <- step(m_full, direction = "backward", k = log(nrow(evals)))
-summary(best_model)  
+# Backward selection is a process that removes the least significant predictors step by step to find the best model.
+#Adjusted R² accounts for the number of predictors and only increases if a predictor improves the model.
+#Adjusted R² focuses on explanatory power.
+#If Adjusted R² decreases when a variable is removed, it means that variable is important.
+
+m_best<-lm(score~ethnicity+gender+language+age+cls_perc_eval+cls_students+cls_credits+bty_avg, data=evals)
+summary (m_best)
+
+# score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
 ```
 
 #16
-```{r}
-# Add your R code here
-```
+score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
+
+Numerical Predictor: cls_perc_eval (Percentage of Students Who Completed Evaluations)
+Holding other factors constant, For every 1 percentage point increase in the number of students who completed the evaluation, the score increases by 0.0057538 points.
+
+Categorical Predictor: ethnicity (Not Minority vs. Minority)
+Professors who are not part of a minority group receive, on average, 0.2044482 points higher on their evaluation scores compared to those in a minority group, holding all other factors constant.
 
 #17
-```{r}
-# Add your R code here
-```
+score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
+
+A professor and course at the University of Texas at Austin that would be associated with a high evaluation score would have the following characteristics:
+Ethnicity: Not Minority (+0.204)
+Gender: Male (+0.177)
+Language: Native English Speaker (+0.151)
+Younger Age (-0.00487 per year)
+Higher Beauty Rating (bty_avg) (+0.0619 per unit)
+Higher Percentage of Students Completing Evaluations (cls_perc_eval) (+0.00575 per 1%)
+Larger Class Size (cls_students) (+0.00041 per student)
+One-Credit Courses (cls_credits) (+0.523)
 
 #18
-```{r}
-# Add your R code here
-```
-
+Would you be comfortable generalizing your conclusions to apply to professors generally (at any university)? Why or why not?
+No 
+Different universities may have different evaluation criteria and student demographics. For instance, a small private college and a large public university may have very different evaluation standards and student expectations.
+Since this dataset comes from only one university (UT Austin), it lacks the variability needed to generalize the findings to other institutions. Without data from multiple universities, we cannot assume that the same factors influencing evaluation scores at UT Austin would apply elsewhere.
