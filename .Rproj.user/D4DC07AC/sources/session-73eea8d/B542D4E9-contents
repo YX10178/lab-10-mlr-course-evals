@@ -106,11 +106,13 @@ Because cls_did_eval is closely related to the other two variables. It can be ca
 ```{r}
 m_full<-lm(score~rank+ethnicity+gender+language+age+cls_perc_eval+cls_did_eval+cls_level+cls_profs+cls_credits+bty_avg, data=evals)
 summary (m_full)
+#Adjusted R-squared:  0.1418 
 ```
 
 #15
 ```{r}
-# Add your R code here
+best_model <- step(m_full, direction = "backward", k = log(nrow(evals)))
+summary(best_model)  
 ```
 
 #16
