@@ -11,72 +11,101 @@ output: github_document
 library(tidyverse) 
 library(tidymodels)
 library(openintro)
+
+data(evals)
+summary (evals)
 ```
 
 ## Exercise 
 ##Part 1: Simple linear regression
 #1
 ```{r}
-# Add your R code here
+m_bty<-lm(score~bty_avg, data=evals)
+summary (m_bty)
+summary(m_bty)$r.squared
+summary(m_bty)$adj.r.squared
+# score  = 0.07 bty_avg + 3.88
+#r.squared = 0.03502226. 3.5% of the variation in price is explained by average beauty rating.
+# adj.r.squared = 0.03292903
+
 ```
 
 ## Part 2: Multiple linear regression
 #2
 ```{r}
-# Add your R code here
+m_bty_gen<-lm(score~bty_avg+gender, data=evals)
+summary(m_bty_gen)$r.squared
+summary(m_bty_gen)$adj.r.squared
+summary (m_bty_gen)
+# score  = 0.07 bty_avg + 0.17gendermale + 3.75
+#r.squared = 0.059. 5.9% of the variation in score is explained by average beauty rating and gender.
+# adj.r.squared = 0.055 in m_bty_gen compared to 0.03 in m_bty model, adding gender improved the model's explanatory power.
 ```
 #3
-```{r}
-# Add your R code here
-```
+For each one-unit increase in beauty rating, the evaluation score increases by 0.07 points, holding gender constant.
+Male professors receive an average evaluation score 0.17 points higher than female professors, holding beauty rating constant.
+
 #4
-```{r}
-# Add your R code here
-```
+r.squared = 0.059. 5.9% of the variation in score is explained by average beauty rating and gender.
+
 #5
-```{r}
-# Add your R code here
-```
+score  = 0.07 bty_avg + 0.17gendermale + 3.75
+just male professor, gendermale=1, 
+scoremale = 0.07 bty_avg + 0.17 + 3.75
+scoremale = 0.07 bty_avg + 3.92
+
 #6
-```{r}
-# Add your R code here
-```
+For two professors who received the same beauty rating, Male professors tend to have the higher course evaluation score. The difference is +0.17. 
+
 #7
-```{r}
-# Add your R code here
-```
+scoremale = 0.07 bty_avg + 3.92
+scorefemale = 0.07 bty_avg + 3.75
+
 #8
-```{r}
-# Add your R code here
-```
+adjusted R squared of m_bty_gen = 0.055
+adjusted R squared of m_bty = 0.03
+adding gender improved the model's explanatory power. 
+  
 #9
-```{r}
-# Add your R code here
-```
+score  = 0.06664 bty_avg + 3.88
+score  = 0.07416 bty_avg + 0.17gendermale + 3.75 
+adding the gender variable changed the parameter estimate (slope) for bty_avg. 
+Adding gender slightly increased the effect of bty_avg on evaluation scores.
+
 #10
 ```{r}
-# Add your R code here
+m_bty_rank<-lm(score~bty_avg+rank, data=evals)
+summary (m_bty_rank)
+# score  = 0.06783 bty_avg + (-0.16) RankTenureTrack + (-0.126) RankTenured + 3.98
+
+# For each one-unit increase in beauty rating, the evaluation score increases by 0.06783 points, holding rank constant.
+# Tenure-track professors receive scores 0.16 points lower than Teaching-track professors, holding everything else constant.
+# Tenured professors receive scores 0.126 points lower than Teaching-track professors, holding everything else constant.
+# The predicted evaluation score for Teaching-track professors is 3.98 when bty_avg = 0. which do not have practical meaning. 
 ```
 
 ##Part 3: The search for the best model
+Going forward, only consider the following variables as potential predictors: rank, ethnicity, gender, language, age, cls_perc_eval (Percent of students in class who completed evaluation), cls_did_eval(Number of students in class who completed evaluation), cls_students(Total number of students in class), cls_level(Class level: lower, upper), cls_profs(Number of professors teaching sections in course in sample: single, multiple), cls_credits(Number of credits of class: one credit (lab, PE, etc.), multi credit), bty_avg.
+
 #11
-```{r}
-# Add your R code here
-```
+To be honest, I think all of these variables could have some association with the professor's evaluation score, either directly or indirectly. However, if I had to choose one, I would say that cls_credits (Number of credits of a class) likely has the weakest association.
 
 #12
 ```{r}
-# Add your R code here
+m_cls_credits<-lm(score~cls_credits, data=evals)
+summary (m_cls_credits)
+# score  = 4.147 + 0.4752 cls_creditsone_credit
+# R-squared:  0.04202. 4.2% of the variation in score is explained by cls_credits.
 ```
 
 #13
-```{r}
-# Add your R code here
-```
+Suppose I wanted to fit a full model with the variables listed above. If I are already going to include cls_perc_eval (Percent of students in class who completed evaluation) and cls_students(Total number of students in class), I should not include cls_did_eval (Number of students in class who completed evaluation) as an additional predictor.
+Because cls_did_eval is closely related to the other two variables. It can be calcultaed by the other two. cls_did_eval does not provide any new independent information. Including cls_did_eval as additional variable can lead to multicollinearity (high correlation among predictors). 
 
 #14
 ```{r}
-# Add your R code here
+m_full<-lm(score~rank+ethnicity+gender+language+age+cls_perc_eval+cls_did_eval+cls_level+cls_profs+cls_credits+bty_avg, data=evals)
+summary (m_full)
 ```
 
 #15

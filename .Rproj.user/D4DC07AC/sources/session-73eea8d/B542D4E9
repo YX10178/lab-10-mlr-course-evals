@@ -3,7 +3,7 @@
     "path": "~/Desktop/datascience/lab-10-mlr-course-evals/lab-10.Rmd",
     "project_path": "lab-10.Rmd",
     "type": "r_markdown",
-    "hash": "2431058934",
+    "hash": "4099506406",
     "contents": "",
     "dirty": false,
     "created": 1741532712025.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "99,3",
-        "scrollLine": "83"
+        "cursorPosition": "106,102",
+        "scrollLine": "104"
     },
     "folds": "",
-    "lastKnownWriteTime": 1741532909,
+    "lastKnownWriteTime": 1741536617,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1741532909420,
+    "last_content_update": 1741536617162,
     "read_only": false,
     "read_only_alternatives": []
 }
