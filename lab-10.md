@@ -97,11 +97,9 @@ summary(m_bty)$adj.r.squared
 
     ## [1] 0.03292903
 
-``` r
-# score  = 0.07 bty_avg + 3.88
-#r.squared = 0.03502226. 3.5% of the variation in price is explained by average beauty rating.
-# adj.r.squared = 0.03292903
-```
+score = 0.07 bty_avg + 3.88 r.squared = 0.03502226. 3.5% of the
+variation in price is explained by average beauty rating. adj.r.squared
+= 0.03292903
 
 ## Part 2: Multiple linear regression
 
@@ -144,11 +142,10 @@ summary (m_bty_gen)
     ## Multiple R-squared:  0.05912,    Adjusted R-squared:  0.05503 
     ## F-statistic: 14.45 on 2 and 460 DF,  p-value: 8.177e-07
 
-``` r
-# score  = 0.07 bty_avg + 0.17gendermale + 3.75
-#r.squared = 0.059. 5.9% of the variation in score is explained by average beauty rating and gender.
-# adj.r.squared = 0.055 in m_bty_gen compared to 0.03 in m_bty model, adding gender improved the model's explanatory power.
-```
+score = 0.07 bty_avg + 0.17gendermale + 3.75 r.squared = 0.059. 5.9% of
+the variation in score is explained by average beauty rating and gender.
+adj.r.squared = 0.055 in m_bty_gen compared to 0.03 in m_bty model,
+adding gender improved the model’s explanatory power.
 
 \#3 For each one-unit increase in beauty rating, the evaluation score
 increases by 0.07 points, holding gender constant. Male professors
@@ -204,14 +201,17 @@ summary (m_bty_rank)
     ## Multiple R-squared:  0.04652,    Adjusted R-squared:  0.04029 
     ## F-statistic: 7.465 on 3 and 459 DF,  p-value: 6.88e-05
 
-``` r
-# score  = 0.06783 bty_avg + (-0.16) RankTenureTrack + (-0.126) RankTenured + 3.98
+score = 0.06783 bty_avg + (-0.16) RankTenureTrack + (-0.126)
+RankTenured + 3.98
 
-# For each one-unit increase in beauty rating, the evaluation score increases by 0.06783 points, holding rank constant.
-# Tenure-track professors receive scores 0.16 points lower than Teaching-track professors, holding everything else constant.
-# Tenured professors receive scores 0.126 points lower than Teaching-track professors, holding everything else constant.
-# The predicted evaluation score for Teaching-track professors is 3.98 when bty_avg = 0. which do not have practical meaning. 
-```
+For each one-unit increase in beauty rating, the evaluation score
+increases by 0.06783 points, holding rank constant. Tenure-track
+professors receive scores 0.16 points lower than Teaching-track
+professors, holding everything else constant. Tenured professors receive
+scores 0.126 points lower than Teaching-track professors, holding
+everything else constant. The predicted evaluation score for
+Teaching-track professors is 3.98 when bty_avg = 0. which do not have
+practical meaning.
 
 \##Part 3: The search for the best model Going forward, only consider
 the following variables as potential predictors: rank, ethnicity,
@@ -255,10 +255,8 @@ summary (m_cls_credits)
     ## Multiple R-squared:  0.04202,    Adjusted R-squared:  0.03994 
     ## F-statistic: 20.22 on 1 and 461 DF,  p-value: 8.751e-06
 
-``` r
-# score  = 4.147 + 0.4752 cls_creditsone_credit
-# R-squared:  0.04202. 4.2% of the variation in score is explained by cls_credits.
-```
+score = 4.147 + 0.4752 cls_creditsone_credit R-squared: 0.04202. 4.2% of
+the variation in score is explained by cls_credits.
 
 \#13 Suppose I wanted to fit a full model with the variables listed
 above. If I are already going to include cls_perc_eval (Percent of
@@ -310,18 +308,16 @@ summary (m_full)
     ## Multiple R-squared:  0.1635, Adjusted R-squared:  0.1412 
     ## F-statistic: 7.331 on 12 and 450 DF,  p-value: 2.406e-12
 
+Adjusted R-squared: 0.1412
+
+\#15 Backward selection is a process that removes the least significant
+predictors step by step to find the best model. Adjusted R² accounts for
+the number of predictors and only increases if a predictor improves the
+model. Adjusted R² focuses on explanatory power. If Adjusted R²
+decreases when a variable is removed, it means that variable is
+important.
+
 ``` r
-#Adjusted R-squared:  0.1412 
-```
-
-\#15
-
-``` r
-# Backward selection is a process that removes the least significant predictors step by step to find the best model.
-#Adjusted R² accounts for the number of predictors and only increases if a predictor improves the model.
-#Adjusted R² focuses on explanatory power.
-#If Adjusted R² decreases when a variable is removed, it means that variable is important.
-
 m_best<-lm(score~ethnicity+gender+language+age+cls_perc_eval+cls_students+cls_credits+bty_avg, data=evals)
 summary (m_best)
 ```
@@ -353,9 +349,10 @@ summary (m_best)
     ## Multiple R-squared:  0.1602, Adjusted R-squared:  0.1454 
     ## F-statistic: 10.82 on 8 and 454 DF,  p-value: 5.463e-14
 
-``` r
-# score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
-```
+score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250
+gendermale + (-0.1511723) languagenon-english + (-0.0048725) age +
+0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953
+cls_creditsone credit + 0.0618985 bty_avg
 
 \#16 score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250
 gendermale + (-0.1511723) languagenon-english + (-0.0048725) age +

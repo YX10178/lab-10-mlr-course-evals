@@ -24,11 +24,11 @@ m_bty<-lm(score~bty_avg, data=evals)
 summary (m_bty)
 summary(m_bty)$r.squared
 summary(m_bty)$adj.r.squared
-# score  = 0.07 bty_avg + 3.88
-#r.squared = 0.03502226. 3.5% of the variation in price is explained by average beauty rating.
-# adj.r.squared = 0.03292903
-
 ```
+score  = 0.07 bty_avg + 3.88
+r.squared = 0.03502226. 3.5% of the variation in price is explained by average beauty rating.
+adj.r.squared = 0.03292903
+
 
 ## Part 2: Multiple linear regression
 #2
@@ -37,10 +37,11 @@ m_bty_gen<-lm(score~bty_avg+gender, data=evals)
 summary(m_bty_gen)$r.squared
 summary(m_bty_gen)$adj.r.squared
 summary (m_bty_gen)
-# score  = 0.07 bty_avg + 0.17gendermale + 3.75
-#r.squared = 0.059. 5.9% of the variation in score is explained by average beauty rating and gender.
-# adj.r.squared = 0.055 in m_bty_gen compared to 0.03 in m_bty model, adding gender improved the model's explanatory power.
 ```
+score  = 0.07 bty_avg + 0.17gendermale + 3.75
+r.squared = 0.059. 5.9% of the variation in score is explained by average beauty rating and gender.
+adj.r.squared = 0.055 in m_bty_gen compared to 0.03 in m_bty model, adding gender improved the model's explanatory power.
+
 #3
 For each one-unit increase in beauty rating, the evaluation score increases by 0.07 points, holding gender constant.
 Male professors receive an average evaluation score 0.17 points higher than female professors, holding beauty rating constant.
@@ -76,13 +77,14 @@ Adding gender slightly increased the effect of bty_avg on evaluation scores.
 ```{r}
 m_bty_rank<-lm(score~bty_avg+rank, data=evals)
 summary (m_bty_rank)
-# score  = 0.06783 bty_avg + (-0.16) RankTenureTrack + (-0.126) RankTenured + 3.98
-
-# For each one-unit increase in beauty rating, the evaluation score increases by 0.06783 points, holding rank constant.
-# Tenure-track professors receive scores 0.16 points lower than Teaching-track professors, holding everything else constant.
-# Tenured professors receive scores 0.126 points lower than Teaching-track professors, holding everything else constant.
-# The predicted evaluation score for Teaching-track professors is 3.98 when bty_avg = 0. which do not have practical meaning. 
 ```
+score  = 0.06783 bty_avg + (-0.16) RankTenureTrack + (-0.126) RankTenured + 3.98
+
+For each one-unit increase in beauty rating, the evaluation score increases by 0.06783 points, holding rank constant.
+Tenure-track professors receive scores 0.16 points lower than Teaching-track professors, holding everything else constant.
+Tenured professors receive scores 0.126 points lower than Teaching-track professors, holding everything else constant.
+The predicted evaluation score for Teaching-track professors is 3.98 when bty_avg = 0. which do not have practical meaning. 
+
 
 ##Part 3: The search for the best model
 Going forward, only consider the following variables as potential predictors: rank, ethnicity, gender, language, age, cls_perc_eval (Percent of students in class who completed evaluation), cls_did_eval(Number of students in class who completed evaluation), cls_students(Total number of students in class), cls_level(Class level: lower, upper), cls_profs(Number of professors teaching sections in course in sample: single, multiple), cls_credits(Number of credits of class: one credit (lab, PE, etc.), multi credit), bty_avg.
@@ -94,9 +96,9 @@ To be honest, I think all of these variables could have some association with th
 ```{r}
 m_cls_credits<-lm(score~cls_credits, data=evals)
 summary (m_cls_credits)
-# score  = 4.147 + 0.4752 cls_creditsone_credit
-# R-squared:  0.04202. 4.2% of the variation in score is explained by cls_credits.
 ```
+score  = 4.147 + 0.4752 cls_creditsone_credit
+R-squared:  0.04202. 4.2% of the variation in score is explained by cls_credits.
 
 #13
 Suppose I wanted to fit a full model with the variables listed above. If I are already going to include cls_perc_eval (Percent of students in class who completed evaluation) and cls_students(Total number of students in class), I should not include cls_did_eval (Number of students in class who completed evaluation) as an additional predictor.
@@ -106,21 +108,20 @@ Because cls_did_eval is closely related to the other two variables. It can be ca
 ```{r}
 m_full<-lm(score~rank+ethnicity+gender+language+age+cls_perc_eval+cls_students+cls_level+cls_profs+cls_credits+bty_avg, data=evals)
 summary (m_full)
-#Adjusted R-squared:  0.1412 
 ```
+Adjusted R-squared:  0.1412 
+
 
 #15
+Backward selection is a process that removes the least significant predictors step by step to find the best model.
+Adjusted R² accounts for the number of predictors and only increases if a predictor improves the model.
+Adjusted R² focuses on explanatory power.
+If Adjusted R² decreases when a variable is removed, it means that variable is important.
 ```{r}
-# Backward selection is a process that removes the least significant predictors step by step to find the best model.
-#Adjusted R² accounts for the number of predictors and only increases if a predictor improves the model.
-#Adjusted R² focuses on explanatory power.
-#If Adjusted R² decreases when a variable is removed, it means that variable is important.
-
 m_best<-lm(score~ethnicity+gender+language+age+cls_perc_eval+cls_students+cls_credits+bty_avg, data=evals)
 summary (m_best)
-
-# score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
 ```
+score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg 
 
 #16
 score = 3.3863086 + 0.2044482 ethnicitynot minority + 0.1768250 gendermale  + (-0.1511723) languagenon-english + (-0.0048725) age + 0.0057538 cls_perc_eval + 0.0004073 cls_students + 0.5230953 cls_creditsone credit + 0.0618985 bty_avg  
